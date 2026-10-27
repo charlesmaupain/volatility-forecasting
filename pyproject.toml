@@ -1,0 +1,14 @@
+[project]
+name = "volatility-forecasting"
+version = "0.1.0"
+description = "Auditable realised-variance forecasting with chronological validation"
+requires-python = ">=3.11"
+dependencies = ["numpy", "pandas", "scikit-learn", "xgboost", "matplotlib", "exchange-calendars", "arch"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["volatility*"]
+

@@ -1,0 +1,52 @@
+{
+  "config": {
+    "experiment": "spx-rv5-development-v1",
+    "source_revision": "d6eafaefee68e4bb191e1d834ae67c2dd353614c",
+    "source_sha256": "42f46a5f569bb30e1bfc8922e0ee857c4152ff1c6e95dbe08b55cf26319dcb99",
+    "symbol": ".SPX",
+    "measure": "rv5",
+    "calendar": "XNYS",
+    "history_start": "2000-01-03",
+    "development_start": "2006-01-01",
+    "development_end": "2017-12-31",
+    "holdout_start": "2018-01-01",
+    "holdout_end": "2019-12-31",
+    "forecast_floor": 1e-10,
+    "ewma_decay": 0.94,
+    "scale": 10000.0,
+    "seed": 1729,
+    "xgb_candidates": [
+      {
+        "max_depth": 2,
+        "n_estimators": 100
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 300
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 100
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 300
+      }
+    ],
+    "learning_rate": 0.03,
+    "refit": "first eligible forecast origin of each month",
+    "tuning": "each development year: two preceding calendar years, expanding inner training, annual fixed-parameter inner forecasts"
+  },
+  "python": "3.13.2",
+  "packages": {
+    "numpy": "2.5.4",
+    "pandas": "3.1.0",
+    "scikit-learn": "1.9.1",
+    "xgboost": "3.4.1",
+    "matplotlib": "3.11.2",
+    "exchange-calendars": "4.13.2"
+  },
+  "eligible_examples": 4334,
+  "forecast_rows": 12076,
+  "holdout_evaluated": false
+}

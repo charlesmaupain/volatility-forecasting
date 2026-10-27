@@ -1,0 +1,13 @@
+horizon,model,raw_nonpositive,floor_hits
+1,EWMA,0,0
+1,HAR,0,0
+1,Persistence,0,0
+1,XGBoost Gamma,0,0
+1,XGBoost Gamma rolling,0,0
+1,XGBoost squared,0,0
+5,EWMA,0,0
+5,HAR,0,0
+5,Persistence,0,0
+5,XGBoost Gamma,0,0
+5,XGBoost Gamma rolling,0,0
+5,XGBoost squared,0,0

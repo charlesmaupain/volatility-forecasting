@@ -1,0 +1,17 @@
+{
+  "verification_date": "2026-10-27",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.2",
+  "environment": "Fresh venv with include-system-site-packages=false; installed requirements-lock.txt",
+  "source": "Source/config/test copy without market data or generated outputs",
+  "fresh_download": true,
+  "test_count": 32,
+  "tests_passed": true,
+  "pip_check_passed": true,
+  "baseline_forecast_rows": 12076,
+  "maximum_absolute_forecast_difference": 0.0,
+  "prediction_csv_byte_identical": true,
+  "scope": "Windows/Python 3.13 fresh baseline reproduction; v2/v3 not rerun in this clean environment; GitHub-hosted CI not executed",
+  "lock_sha256": "e7c290cf1160331fd8bc87b49d5fce94d62b03b9115ddcce4a1c0cb3f2f1bbf8",
+  "archive_sha256": "42f46a5f569bb30e1bfc8922e0ee857c4152ff1c6e95dbe08b55cf26319dcb99"
+}

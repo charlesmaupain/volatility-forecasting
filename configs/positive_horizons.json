@@ -1,0 +1,12 @@
+{
+  "experiment": "spx-positive-multihorizon-v3",
+  "horizons": [1, 5],
+  "objectives": ["reg:squarederror", "reg:gamma"],
+  "rolling_observations": 756,
+  "bootstrap_repetitions": 5000,
+  "bootstrap_block_lengths": [5, 20, 60],
+  "bootstrap_primary_block_length": 20,
+  "seed": 314159,
+  "confidence": 0.95,
+  "holdout_evaluated": false
+}

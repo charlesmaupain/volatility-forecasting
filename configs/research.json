@@ -1,0 +1,14 @@
+{
+  "experiment": "spx-rv5-research-v2",
+  "rolling_observations": 756,
+  "bootstrap_repetitions": 5000,
+  "bootstrap_block_lengths": [5, 20, 60],
+  "bootstrap_primary_block_length": 20,
+  "confidence": 0.95,
+  "seed": 271828,
+  "hybrid": {"max_depth": 2, "n_estimators": 100, "learning_rate": 0.03, "min_residuals": 252},
+  "oof_start": "2003-01-01",
+  "garch": {"p": 1, "q": 1, "mean": "Zero", "dist": "StudentsT", "minimum_history": 252},
+  "regime_quantiles": [0.25, 0.75],
+  "final_holdout_evaluated": false
+}

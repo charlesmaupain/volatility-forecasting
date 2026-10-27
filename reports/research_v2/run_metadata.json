@@ -1,0 +1,107 @@
+{
+  "original_forecast_sha256": "7d138be5f7d70c1b6a3b403fd396d4d0ed42d65b12aaffe03d6dbb8876e2c885",
+  "original_fits_sha256": "41607d312d6e123ed01f5ff83462361003cedfbefdbd3331dec59a15b6cf8047",
+  "source_sha256": "42f46a5f569bb30e1bfc8922e0ee857c4152ff1c6e95dbe08b55cf26319dcb99",
+  "research_config": {
+    "experiment": "spx-rv5-research-v2",
+    "rolling_observations": 756,
+    "bootstrap_repetitions": 5000,
+    "bootstrap_block_lengths": [
+      5,
+      20,
+      60
+    ],
+    "bootstrap_primary_block_length": 20,
+    "confidence": 0.95,
+    "seed": 271828,
+    "hybrid": {
+      "max_depth": 2,
+      "n_estimators": 100,
+      "learning_rate": 0.03,
+      "min_residuals": 252
+    },
+    "oof_start": "2003-01-01",
+    "garch": {
+      "p": 1,
+      "q": 1,
+      "mean": "Zero",
+      "dist": "StudentsT",
+      "minimum_history": 252
+    },
+    "regime_quantiles": [
+      0.25,
+      0.75
+    ],
+    "final_holdout_evaluated": false
+  },
+  "base_config": {
+    "experiment": "spx-rv5-development-v1",
+    "source_revision": "d6eafaefee68e4bb191e1d834ae67c2dd353614c",
+    "source_sha256": "42f46a5f569bb30e1bfc8922e0ee857c4152ff1c6e95dbe08b55cf26319dcb99",
+    "symbol": ".SPX",
+    "measure": "rv5",
+    "calendar": "XNYS",
+    "history_start": "2000-01-03",
+    "development_start": "2006-01-01",
+    "development_end": "2017-12-31",
+    "holdout_start": "2018-01-01",
+    "holdout_end": "2019-12-31",
+    "forecast_floor": 1e-10,
+    "ewma_decay": 0.94,
+    "scale": 10000.0,
+    "seed": 1729,
+    "xgb_candidates": [
+      {
+        "max_depth": 2,
+        "n_estimators": 100
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 300
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 100
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 300
+      }
+    ],
+    "learning_rate": 0.03,
+    "refit": "first eligible forecast origin of each month",
+    "tuning": "each development year: two preceding calendar years, expanding inner training, annual fixed-parameter inner forecasts"
+  },
+  "holdout_evaluated": false,
+  "models": [
+    "HAR + correction",
+    "HAR",
+    "XGBoost",
+    "HAR rolling",
+    "GARCH-t session",
+    "EWMA",
+    "Persistence",
+    "XGBoost rolling"
+  ],
+  "floor_hits": {
+    "EWMA": 0,
+    "GARCH-t session": 0,
+    "HAR": 0,
+    "HAR + correction": 0,
+    "HAR rolling": 0,
+    "Persistence": 0,
+    "XGBoost": 0,
+    "XGBoost rolling": 6
+  },
+  "forecast_dates_per_model": 3019,
+  "packages": {
+    "numpy": "2.5.4",
+    "pandas": "3.1.0",
+    "scikit-learn": "1.9.1",
+    "xgboost": "3.4.1",
+    "arch": "8.0.0"
+  },
+  "maximum_garch_persistence": 1.0000000000026295,
+  "garch_nonconverged_fits": 0,
+  "minimum_matured_residual_count": 685
+}
