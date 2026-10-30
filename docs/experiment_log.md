@@ -33,3 +33,15 @@ Five-session QLIKE: HAR 0.203017; Gamma XGBoost 0.211856; squared-error XGBoost 
 Initial execution failed a final verification assertion on datetime64[ns] versus datetime64[us], after model fitting but before report publication. Normalised date precision in the assertion and reran unchanged settings. Reference one-session forecasts reproduced within tolerance; v1/v2 forecast and fit fingerprints remain unchanged.
 
 Release verification: installed the lock file in a fresh Windows/Python 3.13 environment, ran all 32 tests, downloaded the pinned archive afresh and regenerated v1. Its 12,076 model/date forecast rows are byte-identical to the original CSV. Full v2/v3 empirical runs were not repeated in the clean environment. GitHub-hosted CI has not yet run.
+
+## spx-neural-qlike-v4 — 29 October 2026
+
+Protocol and settings recorded before empirical fitting. Added a fixed 357-parameter PyTorch network, three declared seeds, an arithmetic-mean ensemble and a Gamma GLM control with matched log-transformed features. Monthly expanding fits use matured labels and training-only standardisation at both horizons. No hyperparameter search, early stopping or best-seed selection.
+
+Completed 1,152 monthly fits, producing 42,238 combined model/origin records including unchanged HAR and Gamma XGBoost references. All forecasts are finite and positive. One-session QLIKE: GLM 0.220174, neural ensemble 0.223741, HAR 0.241438. Five-session QLIKE: GLM 0.180610, neural ensemble 0.184920, HAR 0.203017. The neural model has worse MSE and high-volatility-group QLIKE than HAR at both horizons. Findings and all seeds are retained.
+
+Pointwise block-20 intervals favour both new models over HAR, but simultaneous family bands include zero. The five-session neural-HAR pointwise interval includes zero at block length 60. GLM remains the stronger average performer. Clarified that family bands cover the comparisons within each horizon; the calculation and experiment settings were unchanged.
+
+Validation: all 40 tests passed; eight optional neural tests explicitly skip in the original environment without PyTorch. A first synthetic repeatability test incorrectly required six AdamW steps on random data to reduce loss. Separated that assumption from reproducibility and added a learning test with a known positive conditional mean. This happened before market-data fitting and did not change the recorded empirical settings. Package consistency check passed. The full neural experiment was run in the existing local environment, not a newly rebuilt environment; hosted neural CI remains unverified until it runs.
+
+All 864 neural fits reduced training objective from initialisation, but this is not a claim of optimisation convergence. Previous forecast hashes are unchanged. The final 2018-2019 holdout remains unevaluated. No subsequent model retuning was performed.

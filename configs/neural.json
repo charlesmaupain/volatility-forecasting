@@ -1,0 +1,28 @@
+{
+  "experiment": "spx-neural-qlike-v4",
+  "horizons": [
+    1,
+    5
+  ],
+  "seeds": [
+    17,
+    43,
+    101
+  ],
+  "hidden_width": 16,
+  "epochs": 200,
+  "learning_rate": 0.01,
+  "weight_decay": 0.001,
+  "gradient_clip": 5.0,
+  "glm_alpha": 0.001,
+  "bootstrap_repetitions": 5000,
+  "bootstrap_block_lengths": [
+    5,
+    20,
+    60
+  ],
+  "bootstrap_primary_block_length": 20,
+  "bootstrap_seed": 2901026,
+  "confidence": 0.95,
+  "holdout_evaluated": false
+}

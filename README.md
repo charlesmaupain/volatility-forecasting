@@ -6,25 +6,28 @@ The focus is on a fair comparison: models use information available at each fore
 
 Initial release — development results. Evaluation covers 2006-2017. I am keeping 2018-2019 reserved for a final evaluation after model choices are frozen. This is a forecasting study; it does not establish a profitable trading strategy.
 
-![Forecast comparison across horizons](reports/research_v3/figures/horizon_comparison.png)
+![Neural and statistical forecasting comparison](reports/research_v4/figures/neural_comparison.png)
 
-## Initial results
-
-- **Statistical baseline:** HAR beats the original squared-error XGBoost on average one-session QLIKE: 0.2414 versus 0.2636.
-- **Invalid forecasts:** Rolling squared-error XGBoost produces six negative raw variance forecasts. Those failures remain in the results. Gamma regression with a log link produces no nonpositive forecasts in the tested expanding and rolling runs.
-- **Positive-output model:** Gamma XGBoost reaches 0.2378 one-session QLIKE, but its difference from HAR has a pointwise 95% bootstrap interval spanning zero. HAR has lower average loss at the five-session horizon.
-- **HAR correction:** An ML correction trained on historical out-of-sample HAR errors reaches 0.2359 one-session QLIKE; its improvement also remains unresolved by the uncertainty intervals.
+## Latest development results
 
 | Model | One-session QLIKE | Five-session QLIKE |
 | --- | ---: | ---: |
-| HAR | 0.2414 | **0.2030** |
-| XGBoost, squared error | 0.2636 | 0.2148 |
-| XGBoost, Gamma/log link | **0.2378** | 0.2119 |
-| XGBoost, Gamma/log link, rolling | 0.2547 | 0.2403 |
-| EWMA | 0.3042 | 0.2379 |
-| Persistence | 0.3049 | 0.3436 |
+| HAR | 0.2414 | 0.2030 |
+| XGBoost, Gamma/log link | 0.2378 | 0.2119 |
+| Gamma GLM, log features | **0.2202** | **0.1806** |
+| PyTorch MLP, three-seed ensemble | 0.2237 | 0.1849 |
 
-Lower is better. There are 3,019 common forecast dates at one session and 3,015 at five sessions. This table compares the direct-horizon specifications; GARCH and the HAR correction appear in the separate v2 report. Bold marks a sample minimum, not established statistical superiority. All results are exploratory development evidence.
+Lower is better. Each model forecasts the same 3,019 origins at one session and 3,015 at five sessions. Bold marks the sample minimum in this comparison, not independently validated superiority.
+
+The neural ensemble improves average QLIKE over HAR, but the positive linear GLM performs better and fits much faster. The neural model has worse variance MSE than HAR and is also worse in the high-volatility subgroup. Its five-session QLIKE advantage is sensitive to bootstrap block length. The GLM-HAR pointwise intervals favour the GLM at both horizons across all tested block lengths; the primary simultaneous family bands include zero. These remain exploratory development findings.
+
+The [latest interpretation](docs/findings_v4.md) covers uncertainty, regimes and compute costs. Earlier experiments, including the negative-variance failure of rolling squared-error XGBoost, remain available in the reports below.
+
+## Neural forecasting extension
+
+The latest experiment adds a compact PyTorch network trained directly on QLIKE, with positive variance outputs and a fixed three-seed ensemble. A Gamma GLM uses the same log-transformed features to test whether the nonlinear layers add useful evidence. Both horizons retain the original chronological forecast contract and monthly training schedule.
+
+See the [neural experiment report](reports/research_v4/research.md), [model and loss derivation](docs/neural_model.md), and [recorded protocol](docs/research_v4_protocol.md). The network has 357 parameters per seed; all seed results, compute costs and paired uncertainty are reported.
 
 ## Research reports
 
@@ -33,7 +36,8 @@ Lower is better. There are 3,019 common forecast dates at one session and 3,015 
 | [Initial benchmark](reports/development.md) | Does squared-error XGBoost beat persistence, EWMA and HAR? |
 | [Uncertainty and model extensions](reports/research_v2/research.md) | Do rolling windows, GARCH or an out-of-sample HAR correction help? |
 | [Positive forecasts and multiple horizons](reports/research_v3/research.md) | Does a positive-output objective resolve invalid forecasts, and do findings persist at five sessions? |
-| [Latest interpretation](docs/findings_v3.md) | What can and cannot be concluded? |
+| [Neural forecasting](reports/research_v4/research.md) | Does a small QLIKE-trained network improve on a positive linear control and existing baselines? |
+| [Latest interpretation](docs/findings_v4.md) | What can and cannot be concluded? |
 | [Experiment log](docs/experiment_log.md) | What was tried, including failures and follow-up choices? |
 
 ## Evaluation design
@@ -61,7 +65,19 @@ python -m venv .venv
 
 The first experiment downloads the pinned archive if absent. Commands regenerate their own reports and local forecast/fit/tuning records. The final holdout is not evaluated by any of these commands. On macOS/Linux, substitute `.venv/bin/python`; those platforms have not yet been verified.
 
-**Clean-environment verification, 27 October 2026:** all 32 tests passed after installation from the lock file. A fresh data download and baseline run reproduced all 12,076 model/date forecast rows byte-for-byte. This clean check reran v1 and the synthetic tests, not the full v2/v3 empirical experiments. See [verification evidence](reports/release_verification.json). GitHub-hosted CI is configured but has not yet run.
+**Clean-environment verification, 27 October 2026:** all 32 tests passed after installation from the lock file. A fresh data download and baseline run reproduced all 12,076 model/date forecast rows byte-for-byte. This clean check reran v1 and the synthetic tests, not the full v2/v3 empirical experiments. See [verification evidence](reports/release_verification.json). GitHub-hosted CI had not run at the time of that clean-environment verification.
+
+### Optional PyTorch experiment
+
+After generating the v3 reference forecasts above:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements-neural.txt
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+.\.venv\Scripts\python.exe -m volatility.neural_experiment
+```
+
+The optional CPU requirements extend the original lock without replacing it. The full environment passes 40 tests (32 original and eight neural tests). Without PyTorch, the eight neural tests are explicitly skipped. The neural CI job installs the optional dependencies; its hosted result depends on the next push. The earlier clean-environment reproduction above applies to v1, not this extension.
 
 ## Repository map
 
@@ -69,7 +85,7 @@ The first experiment downloads the pinned archive if absent. Commands regenerate
 | --- | --- |
 | `configs/` | Recorded experiment choices, source revision and checksum |
 | `volatility/` | Data acquisition, causal features, models, validation, inference and reporting |
-| `tests/` | 32 temporal, statistical and end-to-end regression tests |
+| `tests/` | 40 tests covering temporal integrity, statistical evaluation and neural training |
 | `reports/` | Aggregate results, audit metadata and PNG/SVG figures |
 | `docs/` | Research protocols, interpretations and source provenance |
 | `data/raw/` | Local archive and manifest; Git-ignored |
@@ -81,7 +97,7 @@ This is the S&P 500 cash index, not a tradable SPY strategy. Targets measure int
 
 Development data has been reused across logged experiments. Bootstrap intervals do not remove model-selection bias or guarantee validity under structural change. Cross-instrument robustness, feature ablations, economic backtesting and final holdout evaluation remain future work. I plan to extend the study with additional instruments and feature ablations before freezing the final evaluation. An economic backtest will require separate assumptions about exposure, costs and execution.
 
-See [data provenance](docs/data_decision.md) and [v1](docs/experiment_v1.md), [v2](docs/research_v2_protocol.md), [v3](docs/research_v3_protocol.md) protocols.
+See the [research roadmap](docs/roadmap.md), [data provenance](docs/data_decision.md) and [v1](docs/experiment_v1.md), [v2](docs/research_v2_protocol.md), [v3](docs/research_v3_protocol.md) and [v4](docs/research_v4_protocol.md) protocols.
 
 ## References
 

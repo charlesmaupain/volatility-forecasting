@@ -1,0 +1,13 @@
+{
+  "date": "2026-10-29",
+  "tests_passed": 40,
+  "optional_tests_skipped_without_torch": 8,
+  "pip_check_passed": true,
+  "monthly_fits": 1152,
+  "forecast_records_including_references": 42238,
+  "finite_positive_forecasts": true,
+  "training_labels_matured": true,
+  "holdout_evaluated": false,
+  "previous_outputs_unchanged": true,
+  "scope": "Local existing Windows/Python 3.13 environment; empirical v4 completed; fresh-environment empirical reproduction and hosted neural CI not run"
+}

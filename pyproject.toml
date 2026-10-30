@@ -5,6 +5,9 @@ description = "Auditable realised-variance forecasting with chronological valida
 requires-python = ">=3.11"
 dependencies = ["numpy", "pandas", "scikit-learn", "xgboost", "matplotlib", "exchange-calendars", "arch"]
 
+[project.optional-dependencies]
+neural = ["torch==2.15.0"]
+
 [build-system]
 requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
